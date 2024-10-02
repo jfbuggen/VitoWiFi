@@ -159,6 +159,9 @@ bool VS1::write(const Datapoint& datapoint, const uint8_t* data, uint8_t length)
 
 bool VS1::begin() {
   if (_interface->begin()) {
+    while (_interface->available()) {
+      _interface->read();  // clear rx buffer
+    }
     _setState(State::INIT);
     return true;
   }
@@ -188,7 +191,8 @@ void VS1::loop() {
     break;
   }
   // double timeout to accomodate for connection initialization
-  if (_currentDatapoint && _currentMillis - _requestTime > 4000UL) {
+  if (_currentDatapoint && _currentMillis - _requestTime > 5000UL) {
+    _bytesTransferred = 0;
     _setState(State::INIT);
     _tryOnError(OptolinkResult::TIMEOUT);
   }
@@ -226,6 +230,7 @@ void VS1::_syncEnq() {
   if (_currentMillis - _lastMillis < 50) {
     if (_currentDatapoint && _interface->write(&VitoWiFiInternals::ProtocolBytes.ENQ_ACK, 1) == 1) {
       _setState(State::SEND);
+      _send();  // speed up things
     }
   } else {
     _setState(State::INIT);
@@ -262,7 +267,7 @@ void VS1::_receive() {
     ++_bytesTransferred;
     _lastMillis = _currentMillis;
   }
-  if (_bytesTransferred == _currentRequest.length()) {
+  if (_bytesTransferred == _currentDatapoint.length()) {
     _bytesTransferred = 0;
     _setState(State::SYNC_RECV);
     _tryOnResponse();
@@ -271,7 +276,7 @@ void VS1::_receive() {
 
 void VS1::_tryOnResponse() {
   if (_onResponseCallback) {
-    _onResponseCallback(_responseBuffer, _currentRequest.length(), _currentDatapoint);
+    _onResponseCallback(_responseBuffer, _currentDatapoint.length(), _currentDatapoint);
   }
   _currentDatapoint = Datapoint(nullptr, 0, 0, noconv);
 }
