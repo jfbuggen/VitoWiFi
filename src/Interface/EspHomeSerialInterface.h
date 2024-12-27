@@ -12,14 +12,14 @@ the LICENSE file.
 
 #include <cassert>
 
-#include <uart.h>            // Will have to make sure this is taken from EspHome uart component
+#include "/esphome/components/uart/uart.h"
 #include "SerialInterface.h"
 
 namespace VitoWiFiInternals {
 
 class EspHomeSerialInterface : public SerialInterface {
  public:
-  explicit EspHomeSerialInterface(UARTDevice* interface);
+  explicit EspHomeSerialInterface(UARTComponent* interface);
   bool begin();
   void end();
   std::size_t write(const uint8_t* data, uint8_t length) override;
@@ -27,7 +27,7 @@ class EspHomeSerialInterface : public SerialInterface {
   size_t available() override;
 
  private:
-  UARTDevice* _interface;
+  UARTComponent* _interface;
 };
 
 }  // end namespace VitoWiFiInternals
