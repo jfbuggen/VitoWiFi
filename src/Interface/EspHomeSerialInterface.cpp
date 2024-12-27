@@ -11,13 +11,17 @@ the LICENSE file.
 #include "EspHomeSerialInterface.h"
 
 namespace VitoWiFiInternals {
-EspHomeSerialInterface::EspHomeSerialInterface(UARTDevice* interface)
+EspHomeSerialInterface::EspHomeSerialInterface(UARTComponent* interface)
 : _interface(interface) {
   assert(interface);
 }
 
 bool EspHomeSerialInterface::begin() {
-  _interface->begin(4800, SERIAL_8E2);
+  _interface->set_baud_rate(4800);
+  _interface->set_data_bits(8);
+  _interface->set_partity(UART_CONFIG_PARITY_EVEN);
+  _interface->set_stop_bits(2);
+  _interface->load_settings(true);
   return (*_interface);
 }
 
