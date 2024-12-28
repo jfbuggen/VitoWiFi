@@ -66,7 +66,7 @@ GWG::GWG(SoftwareSerial* interface)
 #endif
 
 #else
-#if defined(ESPHOME_VARIANT)
+#if defined(USE_ESP32)
 GWG::GWG(UARTComponent* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
