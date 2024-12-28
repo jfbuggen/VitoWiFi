@@ -54,6 +54,27 @@ VS2::VS2(SoftwareSerial* interface)
 #endif
 
 #else
+#if defined(ESPHOME_VARIANT)
+VS2::VS2(UARTComponent* interface)
+: _state(State::UNDEFINED)
+, _currentMillis(vw_millis())
+, _lastMillis(_currentMillis)
+, _requestTime(0)
+, _bytesSent(0)
+, _interface(nullptr)
+, _parser()
+, _currentDatapoint(Datapoint(nullptr, 0, 0, noconv))
+, _currentPacket()
+, _onResponseCallback(nullptr)
+, _onErrorCallback(nullptr) {
+  assert(interface != nullptr);
+  _interface = new(std::nothrow) VitoWiFiInternals::EspHomeSerialInterface(interface);
+  if (!_interface) {
+    vw_log_e("Could not create serial interface");
+    vw_abort();
+  }
+}
+#else
 VS2::VS2(const char* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
@@ -73,6 +94,7 @@ VS2::VS2(const char* interface)
     vw_abort();
   }
 }
+#endif
 #endif
 
 VS2::~VS2() {
