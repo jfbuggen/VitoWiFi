@@ -67,7 +67,7 @@ VS1::VS1(SoftwareSerial* interface)
 
 #else
 #if defined(ESPHOME_VARIANT)
-VS1::VS1(EspHomeSerial* interface)
+VS1::VS1(UARTComponent* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
 , _lastMillis(_currentMillis)
