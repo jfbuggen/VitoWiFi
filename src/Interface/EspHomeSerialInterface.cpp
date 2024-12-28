@@ -21,7 +21,7 @@ bool EspHomeSerialInterface::begin() {
   _interface->set_data_bits(8);
   _interface->set_partity(UART_CONFIG_PARITY_EVEN);
   _interface->set_stop_bits(2);
-  _interface->load_settings(true);
+  _interface->setup();
   return (*_interface);
 }
 
