@@ -81,7 +81,7 @@ VS1::VS1(UARTComponent* interface)
 , _onResponseCallback(nullptr)
 , _onErrorCallback(nullptr) {
   assert(interface != nullptr);
-  _interface = new(std::nothrow) VitoWiFiInternals::HardwareSerialInterface(interface);
+  _interface = new(std::nothrow) VitoWiFiInternals::EspHomeSerialInterface(interface);
   if (!_interface) {
     vw_log_e("Could not create serial interface");
     vw_abort();
