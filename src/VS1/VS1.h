@@ -20,7 +20,7 @@ the LICENSE file.
 #if defined(ARDUINO_ARCH_ESP8266)
 #include "../Interface/SoftwareSerialInterface.h"
 #endif
-#elif defined(ESPHOME_VARIANT)
+#elif defined(USE_ESP32)
 #include "../Interface/EspHomeSerialInterface.h"
 #elif defined(__linux__)
 #include "../Interface/LinuxSerialInterface.h"
