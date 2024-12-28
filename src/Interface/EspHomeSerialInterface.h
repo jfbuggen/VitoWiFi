@@ -8,7 +8,7 @@ the LICENSE file.
 
 #pragma once
 
-#if defined(ESPHOME_VARIANT)  // This is just a way to detect EspHome environment
+#if defined(USE_ESP32)  // This is just a way to detect EspHome environment
 
 #include <cassert>
 
