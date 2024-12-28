@@ -30,13 +30,13 @@ void EspHomeSerialInterface::end() {
 }
 
 std::size_t EspHomeSerialInterface::write(const uint8_t* data, uint8_t length) {
-  return _interface->write(data, length);
+  return _interface->write_array(data, length);
 }
 
 uint8_t EspHomeSerialInterface::read() {
-  uint8_t retVal = 0;
-  _interface->read(&retVal, 1);
-  return retVal;
+  uint8_t data = 0;
+  _interface->read_byte(&data);
+  return data;
 }
 
 size_t EspHomeSerialInterface::available() {
