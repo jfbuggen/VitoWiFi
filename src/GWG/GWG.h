@@ -15,6 +15,13 @@ the LICENSE file.
 #include "../Helpers.h"
 #include "PacketGWG.h"
 #include "../Datapoint/Datapoint.h"
+
+#if defined(USE_ESP32)
+#error "USE_ESP32 defined" 
+#else
+#error "USE_ESP32 NOT defined"
+#endif
+
 #if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 #include "../Interface/HardwareSerialInterface.h"
 #if defined(ARDUINO_ARCH_ESP8266)
