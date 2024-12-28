@@ -6,7 +6,7 @@ For a copy, see <https://opensource.org/licenses/MIT> or
 the LICENSE file.
 */
 
-#if defined(ESPHOME_VARIANT)
+#if defined(USE_ESP32)
 
 #include "EspHomeSerialInterface.h"
 
