@@ -54,7 +54,7 @@ VS2::VS2(SoftwareSerial* interface)
 #endif
 
 #else
-#if defined(ESPHOME_VARIANT)
+#if defined(USE_ESP32)
 VS2::VS2(UARTComponent* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
