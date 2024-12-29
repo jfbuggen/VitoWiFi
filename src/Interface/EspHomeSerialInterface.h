@@ -12,7 +12,7 @@ the LICENSE file.
 
 #include <cassert>
 
-#include <uart.h>
+#include "esphome.h"
 #include "SerialInterface.h"
 
 namespace VitoWiFiInternals {
