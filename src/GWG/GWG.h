@@ -21,7 +21,7 @@ the LICENSE file.
 #include "../Interface/SoftwareSerialInterface.h"
 #endif
 #elif defined(USE_ESP32)
-#include "../Interface/EspHomeSerialInterface.h"
+#include "../Interface/SerialInterface.h"
 #elif defined(__linux__)
 #include "../Interface/LinuxSerialInterface.h"
 #else
@@ -41,7 +41,11 @@ class GWG {
   explicit GWG(SoftwareSerial* interface);
   #endif
   #else
+  #if defined(USE_ESP32)
+  explicit GWG(SerialInterface *interface);
+  #else
   explicit GWG(const char* interface);
+  #endif
   #endif
   ~GWG();
   GWG(const GWG&) = delete;
