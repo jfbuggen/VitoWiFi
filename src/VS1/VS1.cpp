@@ -81,11 +81,11 @@ VS1::VS1(VitoWiFiInternals::SerialInterface* interface)
 , _onResponseCallback(nullptr)
 , _onErrorCallback(nullptr) {
   assert(interface != nullptr);
-  _interface = interface;  // Interface created externally
-  if (!_interface) {
+  if (!interface) {
     vw_log_e("Could not create serial interface");
     vw_abort();
   }
+  _interface = interface;  // Interface created externally
   _responseBuffer = reinterpret_cast<uint8_t*>(malloc(START_PAYLOAD_LENGTH));
   if (!_responseBuffer) {
     vw_log_e("Could not create response buffer");
