@@ -67,7 +67,7 @@ GWG::GWG(SoftwareSerial* interface)
 
 #else
 #if defined(USE_ESP32)
-GWG::GWG(SerialInterface* interface)
+GWG::GWG(VitoWiFiInternals::SerialInterface* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
 , _lastMillis(_currentMillis)
