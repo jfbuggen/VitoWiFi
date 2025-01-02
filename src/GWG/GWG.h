@@ -42,7 +42,7 @@ class GWG {
   #endif
   #else
   #if defined(USE_ESP32)
-  explicit GWG(SerialInterface *interface);
+  explicit GWG(VitoWiFiInternals::SerialInterface *interface);
   #else
   explicit GWG(const char* interface);
   #endif
