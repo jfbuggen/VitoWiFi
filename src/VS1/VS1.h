@@ -21,7 +21,7 @@ the LICENSE file.
 #include "../Interface/SoftwareSerialInterface.h"
 #endif
 #elif defined(USE_ESP32)
-#include "../Interface/EspHomeSerialInterface.h"
+#include "../Interface/SerialInterface.h"
 #elif defined(__linux__)
 #include "../Interface/LinuxSerialInterface.h"
 #else
@@ -41,7 +41,11 @@ class VS1 {
   explicit VS1(SoftwareSerial* interface);
   #endif
   #else
+  #if defined(USE_ESP32)
+  explicit VS1(VitoWiFiInternals::SerialInterface *interface);
+  #else
   explicit VS1(const char* interface);
+  #endif
   #endif
   ~VS1();
   VS1(const VS1&) = delete;
