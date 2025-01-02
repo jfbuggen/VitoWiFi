@@ -122,7 +122,7 @@ GWG::GWG(const char* interface)
 #endif
 
 GWG::~GWG() {
-#ifndef (USE_ESP32)
+#if !defined(USE_ESP32) // Interface created externally when lib is used with EspHome
   delete _interface;
 #endif
   free(_responseBuffer);
