@@ -55,7 +55,7 @@ VS2::VS2(SoftwareSerial* interface)
 
 #else
 #if defined(USE_ESP32)
-VS2::VS2(UARTComponent* interface)
+VS2::VS2(VitoWiFiInternals::SerialInterface* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
 , _lastMillis(_currentMillis)
@@ -68,10 +68,10 @@ VS2::VS2(UARTComponent* interface)
 , _onResponseCallback(nullptr)
 , _onErrorCallback(nullptr) {
   assert(interface != nullptr);
-  _interface = new(std::nothrow) VitoWiFiInternals::EspHomeSerialInterface(interface);
-  if (!_interface) {
+  if (!interface) {
     vw_log_e("Could not create serial interface");
     vw_abort();
+  _interface = interface; // Interface created externally
   }
 }
 #else
@@ -98,7 +98,9 @@ VS2::VS2(const char* interface)
 #endif
 
 VS2::~VS2() {
+#if !defined(USE_ESP32) // Interface created externally when lib is used with EspHome
   delete _interface;
+#endif
 }
 
 void VS2::onResponse(OnResponseCallback callback) {
