@@ -10,7 +10,27 @@ the LICENSE file.
 
 namespace VitoWiFi {
 
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+#if defined(VITOWIFI_GENERIC)
+VS2::VS2(VitoWiFiInternals::SerialInterface* interface)
+: _state(State::UNDEFINED)
+, _currentMillis(vw_millis())
+, _lastMillis(_currentMillis)
+, _requestTime(0)
+, _bytesSent(0)
+, _interface(nullptr)
+, _parser()
+, _currentDatapoint(Datapoint(nullptr, 0, 0, noconv))
+, _currentPacket()
+, _onResponseCallback(nullptr)
+, _onErrorCallback(nullptr) {
+  assert(interface != nullptr);
+  if (!interface) {
+    vw_log_e("Could not create serial interface");
+    vw_abort();
+  _interface = interface; // Interface created externally
+  }
+}
+#elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 VS2::VS2(HardwareSerial* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
@@ -54,27 +74,6 @@ VS2::VS2(SoftwareSerial* interface)
 #endif
 
 #else
-#if defined(USE_ESP32)
-VS2::VS2(VitoWiFiInternals::SerialInterface* interface)
-: _state(State::UNDEFINED)
-, _currentMillis(vw_millis())
-, _lastMillis(_currentMillis)
-, _requestTime(0)
-, _bytesSent(0)
-, _interface(nullptr)
-, _parser()
-, _currentDatapoint(Datapoint(nullptr, 0, 0, noconv))
-, _currentPacket()
-, _onResponseCallback(nullptr)
-, _onErrorCallback(nullptr) {
-  assert(interface != nullptr);
-  if (!interface) {
-    vw_log_e("Could not create serial interface");
-    vw_abort();
-  _interface = interface; // Interface created externally
-  }
-}
-#else
 VS2::VS2(const char* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
@@ -95,10 +94,9 @@ VS2::VS2(const char* interface)
   }
 }
 #endif
-#endif
 
 VS2::~VS2() {
-#if !defined(USE_ESP32) // Interface created externally when lib is used with EspHome
+#if !defined(VITOWIFI_GENERIC) // Interface created externally when lib is used in GENERIC mode
   delete _interface;
 #endif
 }
