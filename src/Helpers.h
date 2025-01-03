@@ -16,7 +16,7 @@ the LICENSE file.
   #include <chrono>  // NOLINT [build/c++11]
   #define vw_millis() std::chrono::duration_cast<std::chrono::duration<uint32_t, std::milli>>(std::chrono::system_clock::now().time_since_epoch()).count()
 #else
-#if defined(USE_ESP32)
+#if defined(VITOWIFI_GENERIC)
 extern uint32_t millis();
 #endif
   #define vw_millis() millis()
