@@ -35,17 +35,15 @@ class VS2 {
   typedef std::function<void(const PacketVS2& response, const Datapoint& request)> OnResponseCallback;
   typedef std::function<void(OptolinkResult error, const Datapoint& request)> OnErrorCallback;
 
-  #if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+  #if defined(VITOWIFI_GENERIC)
+  explicit VS2(VitoWiFiInternals::SerialInterface *interface);
+  #elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
   explicit VS2(HardwareSerial* interface);
   #if defined(ARDUINO_ARCH_ESP8266)
   explicit VS2(SoftwareSerial* interface);
   #endif
   #else
-  #if defined(USE_ESP32)
-  explicit VS2(VitoWiFiInternals::SerialInterface *interface);
-  #else
   explicit VS2(const char* interface);
-  #endif
   #endif
   ~VS2();
   VS2(const VS2&) = delete;
