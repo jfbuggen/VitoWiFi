@@ -15,13 +15,13 @@ the LICENSE file.
 #include "../Helpers.h"
 #include "PacketVS1.h"
 #include "../Datapoint/Datapoint.h"
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+#if defined(VITOWIFI_GENERIC)
+#include "../Interface/SerialInterface.h"
+#elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 #include "../Interface/HardwareSerialInterface.h"
 #if defined(ARDUINO_ARCH_ESP8266)
 #include "../Interface/SoftwareSerialInterface.h"
 #endif
-#elif defined(USE_ESP32)
-#include "../Interface/SerialInterface.h"
 #elif defined(__linux__)
 #include "../Interface/LinuxSerialInterface.h"
 #else
