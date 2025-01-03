@@ -10,7 +10,33 @@ the LICENSE file.
 
 namespace VitoWiFi {
 
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+#if defined(VITOWIFI_GENERIC)
+GWG::GWG(VitoWiFiInternals::SerialInterface* interface)
+: _state(State::UNDEFINED)
+, _currentMillis(vw_millis())
+, _lastMillis(_currentMillis)
+, _requestTime(0)
+, _bytesTransferred(0)
+, _interface(nullptr)
+, _currentDatapoint(Datapoint(nullptr, 0x0000, 0, VitoWiFi::noconv))
+, _currentRequest()
+, _responseBuffer(nullptr)
+, _allocatedLength(0)
+, _onResponseCallback(nullptr)
+, _onErrorCallback(nullptr) {
+  assert(interface != nullptr);
+  if (!interface) {
+    vw_log_e("Could not create serial interface");
+    vw_abort();
+  }
+  _interface = interface;  // Interface created externally
+  _responseBuffer = reinterpret_cast<uint8_t*>(malloc(START_PAYLOAD_LENGTH));
+  if (!_responseBuffer) {
+    vw_log_e("Could not create response buffer");
+    vw_abort();
+  }
+}
+#elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 GWG::GWG(HardwareSerial* interface)
 : _state(State::UNDEFINED)
 , _currentMillis(vw_millis())
@@ -64,34 +90,6 @@ GWG::GWG(SoftwareSerial* interface)
   }
 }
 #endif
-
-#else
-#if defined(USE_ESP32)
-GWG::GWG(VitoWiFiInternals::SerialInterface* interface)
-: _state(State::UNDEFINED)
-, _currentMillis(vw_millis())
-, _lastMillis(_currentMillis)
-, _requestTime(0)
-, _bytesTransferred(0)
-, _interface(nullptr)
-, _currentDatapoint(Datapoint(nullptr, 0x0000, 0, VitoWiFi::noconv))
-, _currentRequest()
-, _responseBuffer(nullptr)
-, _allocatedLength(0)
-, _onResponseCallback(nullptr)
-, _onErrorCallback(nullptr) {
-  assert(interface != nullptr);
-  if (!interface) {
-    vw_log_e("Could not create serial interface");
-    vw_abort();
-  }
-  _interface = interface;  // Interface created externally
-  _responseBuffer = reinterpret_cast<uint8_t*>(malloc(START_PAYLOAD_LENGTH));
-  if (!_responseBuffer) {
-    vw_log_e("Could not create response buffer");
-    vw_abort();
-  }
-}
 #else
 GWG::GWG(const char* interface)
 : _state(State::UNDEFINED)
@@ -119,10 +117,9 @@ GWG::GWG(const char* interface)
   }
 }
 #endif
-#endif
 
 GWG::~GWG() {
-#if !defined(USE_ESP32) // Interface created externally when lib is used with EspHome
+#if !defined(VITOWIFI_GENERIC) // Interface created externally when lib is used in GENERIC mode
   delete _interface;
 #endif
   free(_responseBuffer);
