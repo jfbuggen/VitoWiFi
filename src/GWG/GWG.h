@@ -15,13 +15,13 @@ the LICENSE file.
 #include "../Helpers.h"
 #include "PacketGWG.h"
 #include "../Datapoint/Datapoint.h"
-#if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+#if defined(VITOWIFI_GENERIC)
+#include "../Interface/SerialInterface.h"
+#elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 #include "../Interface/HardwareSerialInterface.h"
 #if defined(ARDUINO_ARCH_ESP8266)
 #include "../Interface/SoftwareSerialInterface.h"
 #endif
-#elif defined(USE_ESP32)
-#include "../Interface/SerialInterface.h"
 #elif defined(__linux__)
 #include "../Interface/LinuxSerialInterface.h"
 #else
@@ -35,17 +35,15 @@ class GWG {
   typedef std::function<void(const uint8_t* data, uint8_t length, const Datapoint& request)> OnResponseCallback;
   typedef std::function<void(OptolinkResult error, const Datapoint& request)> OnErrorCallback;
 
-  #if defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
+  #if defined(VITOWIFI_GENERIC)
+  explicit GWG(VitoWiFiInternals::SerialInterface *interface);
+  #elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
   explicit GWG(HardwareSerial* interface);
   #if defined(ARDUINO_ARCH_ESP8266)
   explicit GWG(SoftwareSerial* interface);
   #endif
   #else
-  #if defined(USE_ESP32)
-  explicit GWG(VitoWiFiInternals::SerialInterface *interface);
-  #else
   explicit GWG(const char* interface);
-  #endif
   #endif
   ~GWG();
   GWG(const GWG&) = delete;
