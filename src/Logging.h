@@ -9,9 +9,9 @@ the LICENSE file.
 #pragma once
 
 #if defined(VITOWIFI_GENERIC)
-  extern vw_log_i(...);
-  extern vw_log_e(...);
-  extern vw_log_w(...);
+  extern int vw_log_i(const char* fmt, ...);
+  extern int vw_log_e(const char* fmt, ...);
+  extern int vw_log_w(const char* fmt, ...);
 #elif defined(ARDUINO_ARCH_ESP32)
   #include <esp32-hal-log.h>
   #include "freertos/FreeRTOS.h"
