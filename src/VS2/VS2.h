@@ -75,6 +75,22 @@ class VS2 {
     RECEIVE_ACK,
     UNDEFINED
   } _state;
+
+  const char* StateStr_[] = {
+    "RESET",
+    "RESET_ACK",
+    "INIT",
+    "INIT_ACK",
+    "IDLE",
+    "SENDSTART",
+    "SENDPACKET",
+    "SEND_CRC",
+    "SEND_ACK",
+    "RECEIVE",
+    "RECEIVE_ACK",
+    "UNDEFINED"
+  };
+
   uint32_t _currentMillis;
   uint32_t _lastMillis;
   uint32_t _requestTime;
