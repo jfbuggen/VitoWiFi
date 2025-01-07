@@ -76,7 +76,7 @@ class VS2 {
     UNDEFINED
   } _state;
 
-  const char* StateStr_[] = {
+  const char* _stateStr[] = {
     "RESET",
     "RESET_ACK",
     "INIT",
