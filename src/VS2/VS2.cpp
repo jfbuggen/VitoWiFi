@@ -23,12 +23,11 @@ VS2::VS2(VitoWiFiInternals::SerialInterface* interface)
 , _currentPacket()
 , _onResponseCallback(nullptr)
 , _onErrorCallback(nullptr) {
-  assert(interface != nullptr);
-  if (!interface) {
-    vw_log_e("Could not create serial interface");
+  if (interface == nullptr) {
+    vw_log_e("No serial interface provided");
     vw_abort();
-  _interface = interface; // Interface created externally
   }
+  _interface = interface; // Interface created externally
 }
 #elif defined(ARDUINO_ARCH_ESP8266) || defined(ARDUINO_ARCH_ESP32)
 VS2::VS2(HardwareSerial* interface)
