@@ -221,6 +221,14 @@ void VS2::end() {
 }
 
 void VS2::_setState(State state) {
+  switch(state)
+    {
+      case VS2::RESET:
+        vw_log_i("Set state RESET\n");
+        break;
+      default:
+        vw_log_i("Set other state\n");
+    }
   vw_log_i("state %i --> %i", static_cast<std::underlying_type<State>::type>(_state), static_cast<std::underlying_type<State>::type>(state));
   _state = state;
 }
