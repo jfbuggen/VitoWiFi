@@ -160,7 +160,7 @@ bool VS2::write(const Datapoint& datapoint, const uint8_t* data, uint8_t length)
 
 bool VS2::begin() {
   _setState(State::RESET);
-  if (_interface == nullptr)
+  if (_interface == nullptr) // Should never be the case
   {
     vw_log_i("No UART configured");
     return false;
@@ -168,11 +168,7 @@ bool VS2::begin() {
   return _interface->begin();
 }
 
-void VS2::loop() {
-// DEBUG
-  return;
-// DEBUG
-  
+void VS2::loop() {  
   _currentMillis = vw_millis();
   switch (_state) {
   case State::RESET:
@@ -225,14 +221,6 @@ void VS2::end() {
 }
 
 void VS2::_setState(State state) {
-  switch(state)
-    {
-      case State::RESET:
-        vw_log_i("Set state RESET\n");
-        break;
-      default:
-        vw_log_i("Set other state\n");
-    }
   vw_log_i("state %i --> %i", static_cast<std::underlying_type<State>::type>(_state), static_cast<std::underlying_type<State>::type>(state));
   _state = state;
 }
