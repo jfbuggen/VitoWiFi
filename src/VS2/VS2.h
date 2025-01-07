@@ -62,7 +62,7 @@ class VS2 {
 
  private:
   enum class State {
-    RESET,
+    RESET = 0,
     RESET_ACK,
     INIT,
     INIT_ACK,
@@ -75,21 +75,6 @@ class VS2 {
     RECEIVE_ACK,
     UNDEFINED
   } _state;
-
-  static const char* _stateStr[] = {
-    "RESET",
-    "RESET_ACK",
-    "INIT",
-    "INIT_ACK",
-    "IDLE",
-    "SENDSTART",
-    "SENDPACKET",
-    "SEND_CRC",
-    "SEND_ACK",
-    "RECEIVE",
-    "RECEIVE_ACK",
-    "UNDEFINED"
-  };
 
   uint32_t _currentMillis;
   uint32_t _lastMillis;
