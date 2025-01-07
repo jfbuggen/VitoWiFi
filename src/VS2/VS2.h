@@ -62,7 +62,7 @@ class VS2 {
 
  private:
   enum class State {
-    RESET = 0,
+    RESET,
     RESET_ACK,
     INIT,
     INIT_ACK,
