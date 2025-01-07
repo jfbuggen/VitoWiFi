@@ -161,7 +161,7 @@ bool VS2::write(const Datapoint& datapoint, const uint8_t* data, uint8_t length)
 
 bool VS2::begin() {
   _setState(State::RESET);
-  return _interface->begin();
+  return true; //_interface->begin();
 }
 
 void VS2::loop() {
