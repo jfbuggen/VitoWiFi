@@ -223,7 +223,7 @@ void VS2::end() {
 void VS2::_setState(State state) {
   switch(state)
     {
-      case VS2::RESET:
+      case State::RESET:
         vw_log_i("Set state RESET\n");
         break;
       default:
