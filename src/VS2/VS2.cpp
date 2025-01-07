@@ -221,6 +221,7 @@ void VS2::end() {
 }
 
 void VS2::_setState(State state) {
+  vw_log_i("state %d --> %d", static_cast<int>(_state), static_cast<int>(state));
   vw_log_i("state %i --> %i", static_cast<std::underlying_type<State>::type>(_state), static_cast<std::underlying_type<State>::type>(state));
   _state = state;
 }
