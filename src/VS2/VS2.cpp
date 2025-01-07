@@ -161,7 +161,12 @@ bool VS2::write(const Datapoint& datapoint, const uint8_t* data, uint8_t length)
 
 bool VS2::begin() {
   _setState(State::RESET);
-  return true; //_interface->begin();
+  if (_interface == nullptr)
+  {
+    vw_log_i("No UART configured");
+    return false;
+  }
+  return _interface->begin();
 }
 
 void VS2::loop() {
